@@ -10,7 +10,6 @@ group 'chef' do
 
 end
 
-
 user 'chef' do
 
   group 'chef'
