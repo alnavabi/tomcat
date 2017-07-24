@@ -45,3 +45,57 @@ execute 'extract_tomcat' do
   cwd '/tmp'
 
 end
+
+
+execute 'chgrp -R chef /opt/tomcat/conf'
+
+
+
+#directory '/opt/tomcat/conf' do
+
+#  group 'chef'
+
+#  mode '0474'
+
+#end
+
+execute 'chmod g+rwx conf' do
+  cwd '/opt/tomcat'
+end
+
+
+execute 'chmod g+r conf/*' do
+
+  cwd '/opt/tomcat'
+
+end
+
+
+
+execute 'chown -R chef webapps/ work/ temp/ logs/ conf/' do
+
+  cwd '/opt/tomcat'
+
+end
+
+
+
+
+template '/etc/systemd/system/tomcat.service' do
+
+  source 'tomcat.service.erb'
+
+end
+
+
+
+execute 'systemctl daemon-reload'
+
+
+
+service 'tomcat' do
+
+  action [:start, :enable]
+
+end
+
